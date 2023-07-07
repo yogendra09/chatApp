@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<style>
+  *{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "gilroy";
+
+  }
+  html,body{
+    height: 100%;
+    width: 100%;
+  }
+  #main{
+    padding: 20px 20px;
+    height: 100vh;
+    width: 100%;
+    
+  }
+  .container{
+    padding: 10px 15px;
+    height: 85vh;
+    overflow-y: auto;
+    width: 100%;
+    border-radius: 10px;
+    background-color:#fcd5ce;
+    }
+  textarea{
+    margin-top: 8px;
+    width: 90%;
+    border: none;
+    outline: none;
+    resize: none;
+    border-radius: 10px;
+    height: 8vh;
+    padding: 15px 20px;
+     background-color: #ffe5d9;
+  }
+  textarea::-webkit-scrollbar{
+    display: none;
+  }
+  button{
+  
+   transform: translateY(-45%);
+   border: none;
+   border-radius: 10px;
+    font-size: 18px;
+    padding: 17px 25px;
+    background-color: #f1faee;
+
+  }
+  .msg{
+    margin-top: 8px;
+    border-radius: 10px;
+    padding: 10px 20px;
+    height: 5vh;
+    width: fit-content;
+    background-color:#f8edeb;
+  }
+</style>
+<body>
+  
+ <div id="main">
+ <div class="container">
+
+ </div>
+<textarea></textarea>
+ <button>send</button>
+ </div>
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.1/socket.io.js" integrity="sha512-Z6C1p1NIexPj5MsVUunW4pg7uMX6/TT3CUVldmjXx2kpip1eZcrAnxIusDxyFIikyM9A61zOVNgvLr/TGudOQg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+  <script>
+     var socket = io();
+   
+      var textarea = document.querySelector("textarea");
+      var btn = document.querySelector("button");
+      var container = document.querySelector(".container");
+         
+      btn.addEventListener('click',function(data){
+       
+        socket.emit('chat message', textarea.value);
+        textarea.value = '';
+      })
+      
+
+      socket.on('chat message', function(msg) {
+  
+        container.innerHTML += `<div class="msg">${msg}<div>`;
+  });
+     
+ 
+   
+     
+  </script>
+</body>
+</html>
