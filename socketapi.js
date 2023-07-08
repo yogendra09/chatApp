@@ -3,13 +3,19 @@ const socketapi = {
     io: io
 };
 
+
+ var activeUsers = [];
+
 // Add your socket.io logic here!
 io.on( "connection", function( socket ) {
 
     console.log( "A user connected" );
+    activeUsers.push(socket.id);
+    io.emit("userPushed",activeUsers.length);
 
     socket.on("disconnect",function(){
         console.log("user disconnected");
+        activeUsers.splice(activeUsers.indexOf(socket.id),1);
     })
 
   
@@ -17,7 +23,7 @@ io.on( "connection", function( socket ) {
         io.emit('chat message', msg);
     })
 
-
+     
 
 });
 
