@@ -42,13 +42,14 @@
     height: 8vh;
     padding: 15px 20px;
      background-color: #ffe5d9;
+     font-size: 20px;
   }
   textarea::-webkit-scrollbar{
     display: none;
   }
   button{
   
-   transform: translateY(-45%);
+ 
    border: none;
    border-radius: 10px;
     font-size: 18px;
@@ -67,18 +68,48 @@
   #nav{
     padding: 10px 20px;
   }
+  #box{
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  #overlay{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    left: 0;
+    top: 0;
+    background-color: #000000a2;
+  }
+  input{
+    padding: 20px 20px;
+    border-radius: 10px;
+    background-color:azure;
+    font-size: 18px;
+    border: none;
+  }
 </style>
 <body>
   
  <div id="main">
+  <div id="overlay">
+    <input id="inpt" type="text">
+    <button id="setname">Set Name</button>
+  </div>
   <div id="nav">
     <h4>Active : <span id="active"></span></h4>
   </div>
  <div class="container">
 
  </div>
-<textarea></textarea>
- <button>send</button>
+<div id="box">
+  <textarea></textarea>
+ <button id="btn">send</button>
+</div>
  </div>
 
 
@@ -88,8 +119,15 @@
      var socket = io();
    
       var textarea = document.querySelector("textarea");
-      var btn = document.querySelector("button");
+      var btn = document.querySelector("#btn");
       var container = document.querySelector(".container");
+      var input = document.querySelector("#inpt");
+      var setName = document.querySelector("#setname");
+
+      setName.addEventListener("click",function(){
+        socket.emit("setName",{name:input.value,userId:socket.id});
+        document.querySelector("#overlay").style.display = 'none';
+      })
          
       btn.addEventListener('click',function(data){
        
@@ -97,19 +135,20 @@
         textarea.value = '';
       })
       
+    socket.on("activeUsers",function(activeUsers){
+     document.querySelector("#active").textContent = activeUsers;
+    })
 
-      socket.on('chat message', function(msg) {
+      socket.on('chat message', function(msg,naam) {
   
-        container.innerHTML += `<div class="msg">${msg}<div>`;
+        container.innerHTML += `<div class="msg">${naam} : ${msg}<div>`;
   });
      
-  socket.on("userPushed",function(len){
-    document.querySelector("#active").textContent = len;
-
-  })
+  
  
+
     textarea.addEventListener("keydown",function(dets){
-      if(dets.key=='Enter'){
+      if(dets.key == 'Enter'){
         btn.click();
       }
     })
