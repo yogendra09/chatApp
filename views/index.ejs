@@ -136,20 +136,20 @@
       })
       
     socket.on("activeUsers",function(activeUsers){
+   
+   
+
+
+
      document.querySelector("#active").textContent = activeUsers;
     })
 
       socket.on('chat message', function(msg,naam) {
-  
+       container.scrollTop = container.scrollHeight;
         container.innerHTML += `<div class="msg">${naam} : ${msg}<div>`;
   });
      
-  
-      const scrollToBottom = (class) => {
-    const element = document.getElementsByClassName(class);
-    element.scrollTop = element.scrollHeight;
-}
-scrollToBottom("container")
+
 
     textarea.addEventListener("keydown",function(dets){
       if(dets.key == 'Enter'){
@@ -157,7 +157,7 @@ scrollToBottom("container")
       }
     })
    
-     
+      container.scrollTop = container.scrollHeight;
   </script>
 </body>
 </html>
