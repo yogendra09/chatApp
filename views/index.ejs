@@ -145,7 +145,11 @@
   });
      
   
- 
+      const scrollToBottom = (class) => {
+    const element = document.getElementsByClassName(class);
+    element.scrollTop = element.scrollHeight;
+}
+scrollToBottom("container")
 
     textarea.addEventListener("keydown",function(dets){
       if(dets.key == 'Enter'){
